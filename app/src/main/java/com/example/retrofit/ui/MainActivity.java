@@ -47,20 +47,24 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
     int mNoOfColumns;
     Map<String, String> page_number = new HashMap<String, String>();
     private List<Results> mList;
-    double width;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mNoOfColumns = Utility.calculateNoOfColumns(this,180);
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
-        next = findViewById(R.id.Next);
-        back = findViewById(R.id.Back);
-        next.setOnClickListener(this);
-        back.setOnClickListener(this);
-        mRecyclerView = findViewById(R.id.rv);
+       setUI();
         Post(page_number_variable);
     }
+   void setUI(){
+       mNoOfColumns = Utility.calculateNoOfColumns(this,180);
+       next = findViewById(R.id.Next);
+       back = findViewById(R.id.Back);
+       next.setOnClickListener(this);
+       back.setOnClickListener(this);
+       setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+       mRecyclerView = findViewById(R.id.rv);
+
+
+   }
 
     private void setRecyclerView(List<Results> movies) {
         mList = movies;

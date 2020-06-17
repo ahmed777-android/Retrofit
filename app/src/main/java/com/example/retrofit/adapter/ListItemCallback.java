@@ -16,6 +16,7 @@ public class ListItemCallback extends DiffUtil.ItemCallback<Results>
     @Override
     public boolean areContentsTheSame
             (@NonNull Results oldItem, @NonNull Results newItem) {
-        return oldItem.getPoster_path().equals(newItem.getPoster_path());
+        return oldItem.getPoster_path().
+                equals(newItem.getPoster_path());
     }
 }
