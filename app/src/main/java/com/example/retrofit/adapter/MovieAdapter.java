@@ -20,27 +20,16 @@ import com.example.retrofit.pojo.Results;
 
 public class MovieAdapter extends ListAdapter<Results, MovieViewHolder> {
 
+    private static final ListItemCallback ListItemCallback = new ListItemCallback();
     Context mContext;
     OnItemClick onItemClick;
     RequestOptions requestOptions = new RequestOptions();
 
     public MovieAdapter(Context context, OnItemClick onItemClick) {
-        super(diffCallback);
+        super(ListItemCallback);
         this.mContext = context;
         this.onItemClick = onItemClick;
     }
-
-    static DiffUtil.ItemCallback<Results> diffCallback = new DiffUtil.ItemCallback<Results>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Results oldItem, @NonNull Results newItem) {
-            return oldItem.getTitle().equals(newItem.getTitle());
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Results oldItem, @NonNull Results newItem) {
-            return oldItem.getPoster_path().equals(newItem.getPoster_path());
-        }
-    };
 
     @NonNull
     @Override
