@@ -47,30 +47,32 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
     int mNoOfColumns;
     Map<String, String> page_number = new HashMap<String, String>();
     private List<Results> mList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       setUI();
+        setUI();
         Post(page_number_variable);
     }
-   void setUI(){
-       mNoOfColumns = Utility.calculateNoOfColumns(this,180);
-       next = findViewById(R.id.Next);
-       back = findViewById(R.id.Back);
-       next.setOnClickListener(this);
-       back.setOnClickListener(this);
-       setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
-       mRecyclerView = findViewById(R.id.rv);
+
+    void setUI() {
+        mNoOfColumns = Utility.calculateNoOfColumns(this, 180);
+        next = findViewById(R.id.Next);
+        back = findViewById(R.id.Back);
+        next.setOnClickListener(this);
+        back.setOnClickListener(this);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        mRecyclerView = findViewById(R.id.rv);
 
 
-   }
+    }
 
     private void setRecyclerView(List<Results> movies) {
         mList = movies;
         mAdapter = new MovieAdapter(this, this);
         RecyclerView.LayoutManager mLayoutManager = null;
-        mLayoutManager = new GridLayoutManager(getApplicationContext(),  mNoOfColumns );
+        mLayoutManager = new GridLayoutManager(getApplicationContext(), mNoOfColumns);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
@@ -101,9 +103,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
     public void onItemClick(int position, ImageView imageView) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("m", mList.get(position));
-       // Toast.makeText(this, "position = " + position, Toast.LENGTH_LONG).show();
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,imageView,"sharedName");
-       startActivity(intent,options.toBundle());
+        // Toast.makeText(this, "position = " + position, Toast.LENGTH_LONG).show();
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this, imageView, "sharedName");
+        startActivity(intent, options.toBundle());
     }
 
     @Override

@@ -5,8 +5,7 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import com.example.retrofit.pojo.Results;
 
-public class ListItemCallback extends DiffUtil.ItemCallback<Results>
-{
+public class ListItemCallback extends DiffUtil.ItemCallback<Results> {
     @Override
     public boolean areItemsTheSame
             (@NonNull Results oldItem, @NonNull Results newItem) {

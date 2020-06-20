@@ -47,7 +47,7 @@ public class MovieAdapter extends ListAdapter<Results, MovieViewHolder> {
             Glide.with(mContext).load(movie.getPoster_path()).apply(requestOptions)
                     .into(holder.poster);
             holder.title.setText(movie.getTitle());
-            holder.rating.setText(movie.getVote_average()+"");
+            holder.rating.setText(movie.getVote_average() + "");
         }
     }
 

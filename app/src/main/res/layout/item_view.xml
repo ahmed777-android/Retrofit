@@ -16,27 +16,27 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:transitionName="sharedName"
             android:id="@+id/poster"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_launcher_background"
+            android:transitionName="sharedName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/poster"
+            android:maxWidth="100dp"
+            android:maxLines="1"
             android:textSize="17sp"
             android:textStyle="bold|italic"
-            android:maxLines="1"
-            android:maxWidth="100dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poster" />
 
         <TextView
             android:id="@+id/rating"
@@ -44,16 +44,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"/>
+            app:layout_constraintTop_toBottomOf="@id/title" />
+
         <ImageView
-            android:src="@drawable/ic_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_star"
+            app:layout_constraintBottom_toBottomOf="@id/rating"
             app:layout_constraintStart_toEndOf="@id/rating"
-            app:layout_constraintTop_toTopOf="@id/rating"
-            app:layout_constraintBottom_toBottomOf="@id/rating"/>
-
-
+            app:layout_constraintTop_toTopOf="@id/rating" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
