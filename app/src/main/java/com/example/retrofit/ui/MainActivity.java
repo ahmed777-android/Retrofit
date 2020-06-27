@@ -13,10 +13,8 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,6 +27,8 @@ import com.example.retrofit.pojo.Movie;
 import com.example.retrofit.pojo.Results;
 import com.example.retrofit.servic.GitHubService;
 import com.example.retrofit.servic.ServiceGenerator;
+import com.example.retrofit.services.PowerEventReceiver;
+import com.example.retrofit.services.UtilServices;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,29 +47,28 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
     int mNoOfColumns;
     Map<String, String> page_number = new HashMap<String, String>();
     private List<Results> mList;
+    private PowerEventReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (receiver == null) {
+            receiver = new PowerEventReceiver();
+            UtilServices.registerPowerEventsReceiver(MainActivity.this, receiver);
+        }
         setUI();
         Post(page_number_variable);
     }
 
     void setUI() {
-        mNoOfColumns = Utility.calculateNoOfColumns(this, 180);
+        mNoOfColumns = UtilityNumView.calculateNoOfColumns(this, 180);
         next = findViewById(R.id.Next);
         back = findViewById(R.id.Back);
         next.setOnClickListener(this);
         back.setOnClickListener(this);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
         mRecyclerView = findViewById(R.id.rv);
-
-
-    }
-
-    private void setRecyclerView(List<Results> movies) {
-        mList = movies;
         mAdapter = new MovieAdapter(this, this);
         RecyclerView.LayoutManager mLayoutManager = null;
         mLayoutManager = new GridLayoutManager(getApplicationContext(), mNoOfColumns);
@@ -77,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+    }
+
+    private void setRecyclerView(List<Results> movies) {
+        mList = movies;
         mAdapter.submitList(movies);
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -93,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
 
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, t.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -112,19 +117,41 @@ public class MainActivity extends AppCompatActivity implements OnItemClick, View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.Next:
+                int nex = Integer.parseInt(next.getText().toString());
+                next.setText(nex + 1 + "");
+                back.setText(nex + "");
                 page_number_variable = page_number_variable + 1;
-                next.setText(page_number_variable + 1 + "");
-                back.setText(page_number_variable + "");
                 Post(page_number_variable);
+                Toast.makeText(this, "FROM >" + page_number_variable, Toast.LENGTH_LONG).show();
                 break;
             case R.id.Back:
-                if (page_number_variable > 1) {
+                if (page_number_variable == 1) {
+                    break;
+                }
+                int nex1 = Integer.parseInt(next.getText().toString()); //3
+                if (nex1 == 2) {
+                    back.setText("HOME");
+                    next.setText("" + 1);
                     page_number_variable = page_number_variable - 1;
-                    next.setText(page_number_variable + "");
-                    back.setText(page_number_variable + "");
                     Post(page_number_variable);
+                    Toast.makeText(this,"FROM ==2"+page_number_variable,Toast.LENGTH_LONG).show();
+
+                }
+                else if (nex1 != 0) {
+                    back.setText("" + (nex1 - 2));  //
+                    next.setText("" + (nex1 - 1));//
+                    page_number_variable = page_number_variable - 1;
+                    Post(page_number_variable);
+                    Toast.makeText(this,"FROM !=0 "+page_number_variable,Toast.LENGTH_LONG).show();
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        UtilServices.unregisterPowerEventsReceiver(MainActivity.this, receiver);
+        receiver = null;
+        super.onDestroy();
     }
 }
